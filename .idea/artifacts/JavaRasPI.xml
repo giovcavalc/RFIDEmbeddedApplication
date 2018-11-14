@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="JavaRasPI">
+    <output-path>$PROJECT_DIR$/out/artifacts/JavaRasPI</output-path>
+    <root id="root">
+      <element id="library" level="project" name="MercuryAPI" />
+      <element id="archive" name="JavaRasPI.jar">
+        <element id="module-output" name="JavaRasPI" />
+      </element>
+    </root>
+  </artifact>
+</component>

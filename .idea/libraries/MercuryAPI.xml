@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="MercuryAPI">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/Documents/TCC/Edge 50 TCP IP/Mercury API/mercuryapi-1.31.0.33/java/aeitagdecoder.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/TCC/Edge 50 TCP IP/Mercury API/mercuryapi-1.31.0.33/java/demo.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/TCC/Edge 50 TCP IP/Mercury API/mercuryapi-1.31.0.33/java/ltkjava-1.0.0.6.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/TCC/Edge 50 TCP IP/Mercury API/mercuryapi-1.31.0.33/java/ltkthingmagic.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/TCC/Edge 50 TCP IP/Mercury API/mercuryapi-1.31.0.33/java/mercuryapi.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
