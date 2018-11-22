@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JavaRasPI.iml" filepath="$PROJECT_DIR$/JavaRasPI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RFIDEmbeddedApplication.iml" filepath="$PROJECT_DIR$/RFIDEmbeddedApplication.iml" />
     </modules>
   </component>
 </project>

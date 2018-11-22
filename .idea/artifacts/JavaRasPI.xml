@@ -4,7 +4,7 @@
     <root id="root">
       <element id="library" level="project" name="MercuryAPI" />
       <element id="archive" name="JavaRasPI.jar">
-        <element id="module-output" name="JavaRasPI" />
+        <element id="module-output" name="RFIDEmbeddedApplication" />
       </element>
     </root>
   </artifact>
