@@ -7,23 +7,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3c4efb12-b303-436e-8e50-de4d8c0d5914" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/RFIDEmbeddedApplication.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/RXTXcomm.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/commons_io_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/cavalcante/giovanni/ControlePorta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/JavaRasPI.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/MercuryAPI.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/MercuryAPI.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RFIDEmbeddedApplication.iml" beforeDir="false" afterPath="$PROJECT_DIR$/RFIDEmbeddedApplication.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/JavaRasPI/JavaRasPI.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/JavaRasPI/aeitagdecoder.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/JavaRasPI/demo.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/JavaRasPI/ltkjava-1.0.0.6.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/JavaRasPI/ltkthingmagic.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/JavaRasPI/mercuryapi.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaRasPI/META-INF/MANIFEST.MF" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JavaRasPI/com/cavalcante/giovanni/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/cavalcante/giovanni/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/cavalcante/giovanni/Main.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -38,8 +22,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/cavalcante/giovanni/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
+            <state relative-caret-position="2635">
+              <caret line="155" column="51" selection-start-line="155" selection-start-column="51" selection-end-line="155" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -51,7 +35,7 @@
         <entry file="file://$PROJECT_DIR$/src/com/cavalcante/giovanni/ControlePorta.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="159">
-              <caret line="40" column="77" lean-forward="true" selection-start-line="40" selection-start-column="77" selection-end-line="40" selection-end-column="77" />
+              <caret line="40" column="77" selection-start-line="40" selection-start-column="77" selection-end-line="40" selection-end-column="77" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -104,7 +88,21 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="RFIDEmbeddedApplication" type="b2602c69:ProjectViewProjectNode" />
+              <item name="RFIDEmbeddedApplication" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="RFIDEmbeddedApplication" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
@@ -114,8 +112,8 @@
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543945701454" />
-    <property name="last_opened_file_path" value="C:/Program Files/Java/jdk1.8.0_161/lib/commons-io-2.6/commons-io-2.6.jar!/" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1543947430012" />
+    <property name="last_opened_file_path" value="C:/Program Files/Java/jdk1.8.0_161/lib/commons-collections4-4.2/commons-collections4-4.2.jar!/" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -182,7 +180,14 @@
       <option name="project" value="LOCAL" />
       <updated>1543276291598</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="3 - Conexão serial para o arduino e identificação automática das portas">
+      <created>1543945767921</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1543945767921</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -272,7 +277,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1 - Código de leitura funcional" />
     <MESSAGE value="2 - Código de leitura resumido dividido em setup e leitura" />
-    <option name="LAST_COMMIT_MESSAGE" value="2 - Código de leitura resumido dividido em setup e leitura" />
+    <MESSAGE value="3 - Conexão serial para o arduino e identificação automática das portas" />
+    <option name="LAST_COMMIT_MESSAGE" value="3 - Conexão serial para o arduino e identificação automática das portas" />
   </component>
   <component name="editorHistoryManager">
     <entry file="jar://$USER_HOME$/Documents/TCC/Edge 50 TCP IP/Mercury API/mercuryapi-1.31.0.33/java/mercuryapi.jar!/com/thingmagic/Reader.class">
@@ -348,7 +354,7 @@
     <entry file="file://$PROJECT_DIR$/src/com/cavalcante/giovanni/ControlePorta.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="159">
-          <caret line="40" column="77" lean-forward="true" selection-start-line="40" selection-start-column="77" selection-end-line="40" selection-end-column="77" />
+          <caret line="40" column="77" selection-start-line="40" selection-start-column="77" selection-end-line="40" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -357,8 +363,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/cavalcante/giovanni/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="133" lean-forward="true" selection-start-line="133" selection-end-line="133" />
+        <state relative-caret-position="2635">
+          <caret line="155" column="51" selection-start-line="155" selection-start-column="51" selection-end-line="155" selection-end-column="51" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

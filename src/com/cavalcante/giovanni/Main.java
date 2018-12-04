@@ -3,17 +3,9 @@ package com.cavalcante.giovanni;
 import com.thingmagic.*;
 import gnu.io.CommPortIdentifier;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Main {
     private static final boolean DEBUG = true;
@@ -22,13 +14,6 @@ public class Main {
 
     private static CommPortIdentifier readerPortId;
     private static CommPortIdentifier arduinoPortId;
-//    private static CommPortIdentifier arduinoShieldPortId;
-
-//    private static final String LINUX = "Linux";
-//    private static final String WINDOWS = "Windows";
-//
-//    private static final String RASP_PI_PORT = "tmr:///dev/ttyACM1";
-//    private static final String WINDOWS_PORT = "eapi:///COM4";
 
     private static Reader reader;
     private static ControlePorta arduinoPort;
@@ -60,10 +45,9 @@ public class Main {
 
     private static void rfidConnectReader() {
         System.out.println("Conectando RFIDReader...");
-        CommPortIdentifier portId = null;
         Enumeration portsEnum = CommPortIdentifier.getPortIdentifiers();
         while (portsEnum.hasMoreElements()) {
-            portId = (CommPortIdentifier) portsEnum.nextElement();
+            CommPortIdentifier portId = (CommPortIdentifier) portsEnum.nextElement();
             String portName = portId.getName();
             System.out.println("Tentando conectar RFIDReader na arduinoPort: " + portName);
 
@@ -84,8 +68,6 @@ public class Main {
         // Nenhuma das portas conectou
         System.out.println("RFIDReader não conseguiu se conectar");
         reader = null;
-        return;
-
     }
 
     private static void rfidReadPlanSetup() {
@@ -105,8 +87,9 @@ public class Main {
         }
     }
 
-    private static void rfidRead() throws InterruptedException{
+    private static List<String> rfidRead() {
         TagReadData[] tagReads = null;
+        List <String> tagsLidas = new ArrayList<>();
         try {
             tagReads = reader.read(500);
         } catch (ReaderException e) {
@@ -114,12 +97,16 @@ public class Main {
             System.out.println(formattedMessage);
             if (DEBUG) e.printStackTrace();
         }
+
+        if (tagReads == null) {
+            return new ArrayList<>();
+        }
+
         // Print tag reads
         for (TagReadData tr : tagReads) {
-            System.out.println("EPC: " + tr.epcString());
-            arduinoPort.enviaDados(tr.epcString());
-            Thread.sleep(1000);
+            tagsLidas.add(tr.epcString());
         }
+        return tagsLidas;
     }
 
     private static void arduinoSerialConnect() {
@@ -140,16 +127,23 @@ public class Main {
         System.out.println("Arduino conectado na porta: " + portName);
     }
 
+    private static void arduinoEnviarTagsLidas(List<String> tagsLidas) throws InterruptedException {
+        for (String tag : tagsLidas) {
+            arduinoPort.enviaDados(tag);
+            Thread.sleep(1000);
+        }
+    }
+
     public static void main(String[] argv) {
         rfidSetup();
         rfidReadPlanSetup();
         arduinoSerialConnect();
 
-        int i = 0;
         try {
             while (true) {
                 System.out.println("Fazendo uma nova leitura:");
-                rfidRead();
+                List<String> tagsLidas = rfidRead();
+                arduinoEnviarTagsLidas(tagsLidas);
                 Thread.sleep(10000);
             }
         } catch (InterruptedException e) {
@@ -159,51 +153,52 @@ public class Main {
         arduinoPort.close();
     }
 
-    static void sendHTTPRequest(List<String> tagIDs) {
-        HttpURLConnection con = null;
-        try {
-            URL url = new URL("http://52.52.244.199:80/");
-            con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("tags", tagIDs.toString());
-
-            con.setDoOutput(true);
-            DataOutputStream out = new DataOutputStream(con.getOutputStream());
-            out.writeBytes(getParamsString(parameters));
-            out.flush();
-            out.close();
-
-            con.connect();
-
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            if (DEBUG) e.printStackTrace();
-            return;
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            if (DEBUG) e.printStackTrace();
-            return;
-        } finally {
-            if (con != null) {
-                con.disconnect();
-            }
-        }
-    }
-
-    static String getParamsString(Map<String, String> params) throws UnsupportedEncodingException {
-        StringBuilder result = new StringBuilder();
-
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
-            result.append("=");
-            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
-            result.append("&");
-        }
-
-        String resultString = result.toString();
-        return resultString.length() > 0 ? resultString.substring(0, resultString.length() - 1) : resultString;
-    }
+// ENVIO DE INFORMAÇÕES VIA HTTP - FEITO NO ARDUINO
+//    static void sendHTTPRequest(List<String> tagIDs) {
+//        HttpURLConnection con = null;
+//        try {
+//            URL url = new URL("http://52.52.244.199:80/");
+//            con = (HttpURLConnection) url.openConnection();
+//            con.setRequestMethod("POST");
+//
+//            Map<String, String> parameters = new HashMap<>();
+//            parameters.put("tags", tagIDs.toString());
+//
+//            con.setDoOutput(true);
+//            DataOutputStream out = new DataOutputStream(con.getOutputStream());
+//            out.writeBytes(getParamsString(parameters));
+//            out.flush();
+//            out.close();
+//
+//            con.connect();
+//
+//        } catch (MalformedURLException e) {
+//            // TODO Auto-generated catch block
+//            if (DEBUG) e.printStackTrace();
+//            return;
+//        } catch (IOException e) {
+//            // TODO Auto-generated catch block
+//            if (DEBUG) e.printStackTrace();
+//            return;
+//        } finally {
+//            if (con != null) {
+//                con.disconnect();
+//            }
+//        }
+//    }
+//
+//    static String getParamsString(Map<String, String> params) throws UnsupportedEncodingException {
+//        StringBuilder result = new StringBuilder();
+//
+//        for (Map.Entry<String, String> entry : params.entrySet()) {
+//            result.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+//            result.append("=");
+//            result.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+//            result.append("&");
+//        }
+//
+//        String resultString = result.toString();
+//        return resultString.length() > 0 ? resultString.substring(0, resultString.length() - 1) : resultString;
+//    }
 
 }
