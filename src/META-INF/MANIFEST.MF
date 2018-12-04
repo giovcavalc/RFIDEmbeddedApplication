@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Class-Path: aeitagdecoder.jar demo.jar ltkjava-1.0.0.6.jar ltkthingmag
- ic.jar mercuryapi.jar
+Class-Path: aeitagdecoder.jar ltkjava-1.0.0.6.jar ltkthingmagic.jar me
+ rcuryapi.jar RXTXcomm.jar commons-io-2.6.jar
 Main-Class: com.cavalcante.giovanni.Main
 

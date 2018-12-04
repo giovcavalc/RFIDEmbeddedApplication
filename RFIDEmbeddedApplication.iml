@@ -8,5 +8,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="MercuryAPI" level="project" />
+    <orderEntry type="library" name="RXTXcomm" level="project" />
+    <orderEntry type="library" name="commons-io-2" level="project" />
   </component>
 </module>

@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact build-on-make="true" name="RFIDEmbeddedApplication">
+    <output-path>$PROJECT_DIR$/out/artifacts/RFIDEmbeddedApplication</output-path>
+    <root id="root">
+      <element id="archive" name="RFIDEmbeddedApplication.jar">
+        <element id="module-output" name="RFIDEmbeddedApplication" />
+      </element>
+      <element id="library" level="project" name="MercuryAPI" />
+      <element id="library" level="project" name="RXTXcomm" />
+      <element id="library" level="project" name="commons-io-2" />
+    </root>
+  </artifact>
+</component>
