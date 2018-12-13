@@ -6,6 +6,7 @@ import gnu.io.CommPortIdentifier;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.*;
 
 public class Main {
     private static final boolean DEBUG = true;
@@ -54,15 +55,32 @@ public class Main {
             try {
                 String readerURI = URI_SCHEME + portName;
                 reader = Reader.create(readerURI);
-                // A Mercury API valida se a arduinoPort conectada de fato é a arduinoPort da leitora RFID.
-                reader.connect();
-                readerPortId = portId;
-                System.out.println("RFIDReader conectado na porta: " + portName);
-                return;
             } catch (ReaderException e) {
                 String formattedMessage = "Não foi possível conectar ao Reader com a URI " + portName;
                 System.out.println(formattedMessage);
                 if (DEBUG) e.printStackTrace();
+            }
+
+            ExecutorService executor = Executors.newCachedThreadPool();
+                Callable<Object> task = new Callable<Object>() {
+                    @Override
+                    public Object call() throws Exception {
+                        reader.connect();
+                        return null;
+                    }
+                };
+                Future<Object> future = executor.submit(task);
+            try {
+                Object result = future.get(5, TimeUnit.SECONDS);
+
+                readerPortId = portId;
+                System.out.println("RFIDReader conectado na porta: " + portName);
+                return;
+            } catch (Exception e) {
+                reader.destroy();
+                e.printStackTrace();
+            } finally {
+                future.cancel(true);
             }
         }
         // Nenhuma das portas conectou
@@ -128,18 +146,28 @@ public class Main {
     }
 
     private static void arduinoEnviarTagsLidas(List<String> tagsLidas) throws InterruptedException {
+        String msg = "";
+        if (tagsLidas.size() > 0) {
+            msg += "[";
+        }
         for (String tag : tagsLidas) {
-            arduinoPort.enviaDados(tag);
+            msg += "\"" + tag + "\"" + ",";
             Thread.sleep(1000);
         }
+        if (tagsLidas.size() > 0) {
+            msg = msg.substring(0, msg.length()-1);
+            msg += "]";
+        }
+        arduinoPort.enviaDados(msg);
+        System.out.println("Mensagem enviada: " + msg);
     }
 
     public static void main(String[] argv) {
-        rfidSetup();
-        rfidReadPlanSetup();
-        arduinoSerialConnect();
-
         try {
+            rfidSetup();
+            rfidReadPlanSetup();
+            arduinoSerialConnect();
+
             while (true) {
                 System.out.println("Fazendo uma nova leitura:");
                 List<String> tagsLidas = rfidRead();
@@ -148,9 +176,14 @@ public class Main {
             }
         } catch (InterruptedException e) {
             if (DEBUG) e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                reader.destroy();
+            }
+            if (arduinoPort != null) {
+                arduinoPort.close();
+            }
         }
-        reader.destroy();
-        arduinoPort.close();
     }
 
 // ENVIO DE INFORMAÇÕES VIA HTTP - FEITO NO ARDUINO

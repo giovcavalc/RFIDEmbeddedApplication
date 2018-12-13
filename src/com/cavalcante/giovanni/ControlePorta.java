@@ -29,7 +29,7 @@ public class ControlePorta {
     }
 
     /**
-     * Médoto que verifica se a comunicação com a porta serial está ok
+     * Método que verifica se a comunicação com a porta serial está ok
      */
     private void initialize() {
         try {
@@ -82,7 +82,7 @@ public class ControlePorta {
      */
     public void enviaDados(String dado){
         try {
-            serialOut.write(dado.getBytes());//escreve o valor na porta serial para ser enviado
+            serialOut.write(dado.getBytes()); //escreve o valor na porta serial para ser enviado
         } catch (IOException ex) {
             System.out.println("Erro ao enviar os dados pela porta serial");
         }
