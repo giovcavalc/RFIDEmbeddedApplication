@@ -3,21 +3,26 @@ package com.cavalcante.giovanni;
 import com.thingmagic.*;
 import gnu.io.CommPortIdentifier;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class Main {
     private static final boolean DEBUG = true;
 
-    private static final String URI_SCHEME = "tmr://";
+    private static final int READ_TIME = 3000;
+    private static final int TIME_BETWEEN_READS = 10000;
+    private static final String URI_SCHEME = "tmr:///";
 
     private static CommPortIdentifier readerPortId;
     private static CommPortIdentifier arduinoPortId;
 
     private static Reader reader;
+    private static ReadListener readListener = new AddToSetListener();
+    private static ReadExceptionListener exceptionListener = new TagReadExceptionReceiver();
     private static ControlePorta arduinoPort;
+
+    private static Set<String> tagsLidas = new HashSet<>();
 
     private static void rfidSetup() {
         rfidConnectReader();
@@ -50,7 +55,7 @@ public class Main {
         while (portsEnum.hasMoreElements()) {
             CommPortIdentifier portId = (CommPortIdentifier) portsEnum.nextElement();
             String portName = portId.getName();
-            System.out.println("Tentando conectar RFIDReader na arduinoPort: " + portName);
+            System.out.println("Tentando conectar RFIDReader na porta: " + portName);
 
             try {
                 String readerURI = URI_SCHEME + portName;
@@ -89,7 +94,7 @@ public class Main {
     }
 
     private static void rfidReadPlanSetup() {
-        int[] antennaList = {1, 2, 3, 4};
+        int[] antennaList = {1};
 
         if (reader == null) {
             return;
@@ -98,6 +103,8 @@ public class Main {
         try {
             SimpleReadPlan plan = new SimpleReadPlan(antennaList, TagProtocol.GEN2, null, null, 1000);
             reader.paramSet(TMConstants.TMR_PARAM_READ_PLAN, plan);
+            reader.addReadListener(readListener);
+            reader.addReadExceptionListener(exceptionListener);
         } catch (ReaderException e) {
             String formattedMessage = "Não foi possível criar o plano de leitura para o Reader";
             System.out.println(formattedMessage);
@@ -105,26 +112,16 @@ public class Main {
         }
     }
 
-    private static List<String> rfidRead() {
+    private static void rfidRead() {
         TagReadData[] tagReads = null;
-        List <String> tagsLidas = new ArrayList<>();
+
         try {
-            tagReads = reader.read(500);
-        } catch (ReaderException e) {
-            String formattedMessage = "Erro durante a leitura das tags";
-            System.out.println(formattedMessage);
+            reader.startReading();
+            Thread.sleep(READ_TIME);
+            reader.stopReading();
+        } catch (InterruptedException e) {
             if (DEBUG) e.printStackTrace();
         }
-
-        if (tagReads == null) {
-            return new ArrayList<>();
-        }
-
-        // Print tag reads
-        for (TagReadData tr : tagReads) {
-            tagsLidas.add(tr.epcString());
-        }
-        return tagsLidas;
     }
 
     private static void arduinoSerialConnect() {
@@ -145,7 +142,7 @@ public class Main {
         System.out.println("Arduino conectado na porta: " + portName);
     }
 
-    private static void arduinoEnviarTagsLidas(List<String> tagsLidas) throws InterruptedException {
+    private static void arduinoEnviarTagsLidas() throws InterruptedException {
         String msg = "";
         if (tagsLidas.size() > 0) {
             msg += "[";
@@ -170,18 +167,43 @@ public class Main {
 
             while (true) {
                 System.out.println("Fazendo uma nova leitura:");
-                List<String> tagsLidas = rfidRead();
-                arduinoEnviarTagsLidas(tagsLidas);
-                Thread.sleep(10000);
+                rfidRead();
+                arduinoEnviarTagsLidas();
+                Thread.sleep(TIME_BETWEEN_READS);
             }
         } catch (InterruptedException e) {
             if (DEBUG) e.printStackTrace();
         } finally {
             if (reader != null) {
+                reader.removeReadListener(readListener);
+                reader.removeReadExceptionListener(exceptionListener);
                 reader.destroy();
             }
             if (arduinoPort != null) {
                 arduinoPort.close();
+            }
+        }
+    }
+
+    static class AddToSetListener implements ReadListener
+    {
+        public void tagRead(Reader r, TagReadData tr) {
+            tagsLidas.add(tr.epcString());
+        }
+
+    }
+
+    static class TagReadExceptionReceiver implements ReadExceptionListener
+    {
+        String strDateFormat = "M/d/yyyy h:m:s a";
+        SimpleDateFormat sdf = new SimpleDateFormat(strDateFormat);
+        public void tagReadException(com.thingmagic.Reader r, ReaderException re)
+        {
+            String format = sdf.format(Calendar.getInstance().getTime());
+            System.out.println("Reader Exception: " + re.getMessage() + " Occured on :" + format);
+            if(re.getMessage().equals("Connection Lost"))
+            {
+                System.exit(1);
             }
         }
     }
